@@ -220,6 +220,7 @@ public class StockQuoteAnalyzer {
 	 *             data source.
 	 */
 	public double getChangeSinceLastCheck() throws InvalidAnalysisState {
+		// TODO: GOT A BIG OL BUG RIGHT HERE YA SEE
 		return currentQuote.getLastTrade() - currentQuote.getLastTrade();
 	}
 }
