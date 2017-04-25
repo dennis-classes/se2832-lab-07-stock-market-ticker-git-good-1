@@ -49,7 +49,7 @@ public class StockQuoteAnalyzerTest {
     }
 
     @Test
-    public void constructorShouldWorkWhenValidSymbolsAreProvided() throws Exception {
+    public void getCurrentPriceShouldReturnTheLastTradeValueWhenValidInputIsSupplied() throws Exception {
         analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
         StockQuote sq = new StockQuote("AAPL", 50.0,50.0,0.0);
         when(generatorMock.getCurrentQuote()).thenReturn(sq);
