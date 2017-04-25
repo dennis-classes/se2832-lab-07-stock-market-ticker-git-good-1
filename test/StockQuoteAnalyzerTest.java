@@ -126,12 +126,11 @@ public class StockQuoteAnalyzerTest {
         verify(audioMock, times(1)).playErrorMusic();
     }
 
-//    @Test
-//    public void getChangeSinceCloseWhen() throws Exception {
-//        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
-//        StockQuote sq = new StockQuote("AAPL", 50.0,50.0,0.0);
-//        when(generatorMock.getCurrentQuote()).thenReturn(sq);
-//        analyzer.refresh();
-//        assertEquals(analyzer.getCurrentPrice(), 50.0);
-//    }
+    @Test
+    public void getChangeSinceCloseShouldReturnChangeWhenValid() throws Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        when(generatorMock.getCurrentQuote()).thenReturn(new StockQuote("AAPL", 40.0, 35.0, -5.0));
+        analyzer.refresh();
+        assertEquals(analyzer.getChangeSinceClose(), -5.0);
+    }
 }
