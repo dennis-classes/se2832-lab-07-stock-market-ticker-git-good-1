@@ -1,3 +1,4 @@
+import exceptions.InvalidAnalysisState;
 import exceptions.InvalidStockSymbolException;
 import exceptions.StockTickerConnectionError;
 import org.testng.annotations.AfterMethod;
@@ -39,6 +40,21 @@ public class StockQuoteAnalyzerTest {
 
     @Test(expectedExceptions = InvalidStockSymbolException.class)
     public void constructorShouldThrowExceptionWhenSymbolIsInvalid() throws Exception {
-        analyzer = new StockQuoteAnalyzer("ZZZZZZZZZ", generatorMock, audioMock);
+        analyzer = new StockQuoteAnalyzer("ZZZZZZZZL", generatorMock, audioMock);
     }
+
+    @Test(expectedExceptions = InvalidStockSymbolException.class)
+    public void constructorShouldThrowInvalidStockSymbolExceptionWhenNoSymbolIsProvided() throws InvalidStockSymbolException {
+        analyzer = new StockQuoteAnalyzer("",generatorMock, audioMock);
+    }
+
+    @Test
+    public void constructorShouldWorkWhenValidSymbolsAreProvided() throws Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        StockQuote sq = new StockQuote("AAPL", 50.0,50.0,0.0);
+        when(generatorMock.getCurrentQuote()).thenReturn(sq);
+        analyzer.refresh();
+        assertEquals(analyzer.getCurrentPrice(), 50.0);
+    }
+
 }
