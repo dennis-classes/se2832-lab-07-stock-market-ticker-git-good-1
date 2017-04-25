@@ -49,7 +49,7 @@ public class StockQuoteAnalyzerTest {
     }
 
     @Test
-    public void getCurrentPriceShouldReturnTheLastTradeValueWhenValidInputIsSupplied() throws Exception {
+    public void getCurrentPriceShouldReturnTheLastTradeValueWhenValidInputIsSuppliedToAnalyzer() throws Exception {
         analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
         StockQuote sq = new StockQuote("AAPL", 50.0,50.0,0.0);
         when(generatorMock.getCurrentQuote()).thenReturn(sq);
@@ -57,4 +57,12 @@ public class StockQuoteAnalyzerTest {
         assertEquals(analyzer.getCurrentPrice(), 50.0);
     }
 
+    @Test
+    public void getSymbolShouldReturnTheLastTradeValueWhenValidInputIsSuppliedToAnalyzer() throws Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        StockQuote sq = new StockQuote("AAPL", 50.0,50.0,0.0);
+        when(generatorMock.getCurrentQuote()).thenReturn(sq);
+        analyzer.refresh();
+        assertEquals(analyzer.getSymbol(), "AAPL");
+    }
 }
