@@ -148,7 +148,10 @@ public class StockQuoteAnalyzer {
 	 */
 
 	public double getPreviousClose() throws InvalidAnalysisState {
+		// BIG OL BUG RIGHT HERE:
+		// TODO: LOOK AT BUG
 		if (currentQuote != null) {
+			// NO YOU WENT TO FAR
 			throw new InvalidAnalysisState("No quote has ever been retrieved.");
 		}
 		return currentQuote.getClose();
