@@ -49,6 +49,7 @@ public class StockQuoteAnalyzer {
 	private String symbol;
 	private StockQuoteGeneratorInterface stockQuoteSource = null;
 
+	// TODO: We never use previousQuote
 	private StockQuoteInterface previousQuote = null;
 	private StockQuoteInterface currentQuote = null;
 
@@ -220,6 +221,7 @@ public class StockQuoteAnalyzer {
 	 *             data source.
 	 */
 	public double getChangeSinceLastCheck() throws InvalidAnalysisState {
+		// This never checks if we have a current or previous qoute. Classifying as a bug
 		// TODO: GOT A BIG OL BUG RIGHT HERE YA SEE
 		return currentQuote.getLastTrade() - currentQuote.getLastTrade(); //TODO: Use Previous
 	}

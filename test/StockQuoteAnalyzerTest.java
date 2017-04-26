@@ -141,4 +141,34 @@ public class StockQuoteAnalyzerTest {
         analyzer.refresh();
         assertEquals(analyzer.getChangeSinceClose(), -5.0);
     }
+
+    @Test(expectedExceptions = StockTickerConnectionError.class)
+    public void refreshShouldThrowStockTickerConnectionErrorWhenStockQuoteSourceThrowsException() throws Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        when(generatorMock.getCurrentQuote()).thenThrow(new Exception("This is a test"));
+        analyzer.refresh();
+    }
+
+    @Test(expectedExceptions =  InvalidAnalysisState.class)
+    public void getCurrentPriceShouldThrowInvalidAnalysisStateWhenRefreshIsNotCalledFirst() throws InvalidStockSymbolException, InvalidAnalysisState {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        analyzer.getCurrentPrice();
+    }
+
+    @Test(expectedExceptions =  InvalidAnalysisState.class)
+    public void getChangeSinceCloseShouldThrowInvalidAnalysisStateWhenRefreshIsNotCalledFirst() throws InvalidStockSymbolException, InvalidAnalysisState {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        analyzer.getChangeSinceClose();
+    }
+
+    @Test
+    public void getChangeSinceLastCheckShouldReturnTheChangeSinceLastCheckWhenValidInputIsSupplied() throws Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        when(generatorMock.getCurrentQuote()).thenReturn(new StockQuote("AAPL", 50.0, 50.0, 0.0));
+        analyzer.refresh();
+        when(generatorMock.getCurrentQuote()).thenReturn(new StockQuote("AAPL", 50.0, 60.0, 10.0));
+        analyzer.refresh();
+        assertEquals(analyzer.getChangeSinceLastCheck(), 10.0);
+
+    }
 }
