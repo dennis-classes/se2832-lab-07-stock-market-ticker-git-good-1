@@ -45,12 +45,12 @@ public class StockQuoteAnalyzerTest {
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void constructorShouldThrowExceptionWhenGeneratorIsNull() throws Exception {
+    public void constructorShouldThrowNullPointerExceptionWhenGeneratorIsNull() throws Exception {
         analyzer = new StockQuoteAnalyzer("AAPL", null, audioMock);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void constructorShouldThrowExceptionWhenAudioPlayerIsNull() throws Exception {
+    public void constructorShouldThrowNullPointerExceptionWhenAudioPlayerIsNull() throws Exception {
         analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, null);
     }
 
@@ -113,6 +113,19 @@ public class StockQuoteAnalyzerTest {
     }
 
     @Test
+    public void playAppropriateAudioShouldPlayNoMusicWhenPercentChangeIsBetween0And1() throws
+            Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        StockQuote sq = new StockQuote("AAPL", 25.0, 50.0, 0.3);
+        when(generatorMock.getCurrentQuote()).thenReturn(sq);
+        analyzer.refresh();
+        analyzer.playAppropriateAudio();
+        verify(audioMock, times(0)).playSadMusic();
+        verify(audioMock, times(0)).playHappyMusic();
+        verify(audioMock, times(0)).playErrorMusic();
+    }
+
+    @Test
     public void playAppropriateAudioShouldPlayHappyMusicWhenPercentChangeIsGreaterThan0() throws Exception {
         analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
         StockQuote sq = new StockQuote("AAPL", 25.0, 50.0, 25.0);
@@ -125,7 +138,7 @@ public class StockQuoteAnalyzerTest {
     }
 
     @Test
-    public void playAppropriateAudioShouldPlayErrorMusicWhenNoQouteIsPresent() throws Exception {
+    public void playAppropriateAudioShouldPlayErrorMusicWhenNoQuoteIsPresent() throws Exception {
         analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
         analyzer.refresh();
         analyzer.playAppropriateAudio();
@@ -139,7 +152,25 @@ public class StockQuoteAnalyzerTest {
         analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
         when(generatorMock.getCurrentQuote()).thenReturn(new StockQuote("AAPL", 40.0, 35.0, -5.0));
         analyzer.refresh();
-        assertEquals(analyzer.getChangeSinceClose(), -5.0);
+        assertEquals(analyzer.getChangeSinceClose(), -5.0, DELTA);
+    }
+
+    @Test
+    public void getPercentChangeSinceCloseShouldReturnZeroIfCloseDidNotChange() throws Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        when(generatorMock.getCurrentQuote()).thenReturn(new StockQuote("AAPL", 40.0, 35.0, 0.0));
+        analyzer.refresh();
+
+        assertEquals(analyzer.getPercentChangeSinceClose(), 0.0, DELTA);
+    }
+
+    @Test
+    public void getPercentChangeSinceCloseShouldReturnChangeIfChangeIsValid() throws Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        when(generatorMock.getCurrentQuote()).thenReturn(new StockQuote("AAPL", 50.0, 40.0, 5.0));
+        analyzer.refresh();
+
+        assertEquals(analyzer.getPercentChangeSinceClose(), ((5.0 / 50.0) * 100.0), DELTA);
     }
 
     @Test(expectedExceptions = StockTickerConnectionError.class)
@@ -168,7 +199,6 @@ public class StockQuoteAnalyzerTest {
         analyzer.refresh();
         when(generatorMock.getCurrentQuote()).thenReturn(new StockQuote("AAPL", 50.0, 60.0, 10.0));
         analyzer.refresh();
-        assertEquals(analyzer.getChangeSinceLastCheck(), 10.0);
-
+        assertEquals(analyzer.getChangeSinceLastCheck(), 10.0, DELTA);
     }
 }

@@ -49,7 +49,7 @@ public class StockQuoteAnalyzer {
 	private String symbol;
 	private StockQuoteGeneratorInterface stockQuoteSource = null;
 
-	// TODO: We never use previousQuote
+	// TODO: We never use previousQuote. This must be fixed in the very last method.
 	private StockQuoteInterface previousQuote = null;
 	private StockQuoteInterface currentQuote = null;
 
@@ -83,7 +83,7 @@ public class StockQuoteAnalyzer {
 			throw new NullPointerException("The source for stock quotes can not be null");
 		}
 		this.stockQuoteSource = stockQuoteSource;
-		this.audioPlayer = audioPlayer;
+		this.audioPlayer = audioPlayer; //TODO: Null check audio player
 	}
 
 	/**
@@ -117,6 +117,8 @@ public class StockQuoteAnalyzer {
 	public void playAppropriateAudio() {
 		if (audioPlayer != null) {
 			try {
+                //TODO: Happy music should only play for more than 1%, according to method
+                //TODO CONTINUED: signature.
 				if ((this.getPercentChangeSinceClose() > 0)) {
 					audioPlayer.playHappyMusic();
 				}
@@ -187,8 +189,10 @@ public class StockQuoteAnalyzer {
 	public double getChangeSinceClose() throws InvalidAnalysisState {
 		if (currentQuote == null) {
 			throw new NullPointerException("No quote has ever been retrieved.");
+            //TODO: This is the wrong exception type, according to the method signature.
 		}
 		return currentQuote.getChange()-currentQuote.getClose();
+		//TODO: This should be a simple accessor, calling only getChange().
 	}
 
 	/**
@@ -204,7 +208,7 @@ public class StockQuoteAnalyzer {
 		if (currentQuote == null) {
 			throw new InvalidAnalysisState("No quote has ever been retrieved.");
 		}
-
+        //TODO: Should multiply by 10000.
 		return Math.round((100000 * this.currentQuote.getChange() / this.currentQuote.getClose())) / 100.0;
 	}
 
