@@ -126,6 +126,31 @@ public class StockQuoteAnalyzerTest {
     }
 
     @Test
+    public void playAppropriateAudioShouldPlayNoMusicWhenPercentChangeIsBetweenMinus1And0() throws
+            Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        StockQuote sq = new StockQuote("AAPL", 25.0, 50.0, -0.3);
+        when(generatorMock.getCurrentQuote()).thenReturn(sq);
+        analyzer.refresh();
+        analyzer.playAppropriateAudio();
+        verify(audioMock, times(0)).playSadMusic();
+        verify(audioMock, times(0)).playHappyMusic();
+        verify(audioMock, times(0)).playErrorMusic();
+    }
+
+    @Test
+    public void playAppropriateAudioShouldPlayNoMusicWhenPercentChangeIsZero() throws  Exception {
+        analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
+        StockQuote sq = new StockQuote("AAPL", 25.0, 50.0, 0.0);
+        when(generatorMock.getCurrentQuote()).thenReturn(sq);
+        analyzer.refresh();
+        analyzer.playAppropriateAudio();
+        verify(audioMock, times(0)).playSadMusic();
+        verify(audioMock, times(0)).playHappyMusic();
+        verify(audioMock, times(0)).playErrorMusic();
+    }
+
+    @Test
     public void playAppropriateAudioShouldPlayHappyMusicWhenPercentChangeIsGreaterThan0() throws Exception {
         analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
         StockQuote sq = new StockQuote("AAPL", 25.0, 50.0, 25.0);
