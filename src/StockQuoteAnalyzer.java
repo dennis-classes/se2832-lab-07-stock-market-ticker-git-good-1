@@ -115,9 +115,7 @@ public class StockQuoteAnalyzer {
     public void playAppropriateAudio() {
         if (audioPlayer != null) {
             try {
-                //TODO: Happy music should only play for more than 1%, according to method
-                //TODO CONTINUED: signature.
-                if ((this.getPercentChangeSinceClose() > 0)) {
+                if ((this.getPercentChangeSinceClose() > 1)) {
                     audioPlayer.playHappyMusic();
                 }
                 if ((this.getPercentChangeSinceClose() <= -1)) {
