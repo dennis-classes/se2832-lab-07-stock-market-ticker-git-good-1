@@ -63,9 +63,6 @@ public class StockQuoteAnalyzer {
 	 *             Will be thrown if the symbol for the stock is invalid.
 	 * @throws NullPointerException
 	 *             Will be thrown if the stock quote source is null.
-	 * @throws StockTickerConnectionError
-	 *             Will be thrown if the class can not connect to the stock
-	 *             quote source.
 	 */
 
 	public StockQuoteAnalyzer(String symbol, StockQuoteGeneratorInterface stockQuoteSource,
@@ -151,10 +148,7 @@ public class StockQuoteAnalyzer {
 	 */
 
 	public double getPreviousClose() throws InvalidAnalysisState {
-		// BIG OL BUG RIGHT HERE:
-		// TODO: LOOK AT BUG
-		if (currentQuote != null) {
-			// NO YOU WENT TO FAR
+		if (currentQuote == null) {
 			throw new InvalidAnalysisState("No quote has ever been retrieved.");
 		}
 		return currentQuote.getClose();
