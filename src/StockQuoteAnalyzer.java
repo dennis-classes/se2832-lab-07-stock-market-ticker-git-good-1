@@ -23,7 +23,7 @@
  * POSSESSION, USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @version $Rev:: 4                       $:  Revision of last commit
- * @author $Author:: schilling            $:  Author of last commit
+ * @author $Author:: schilling             $:  Author of last commit
  * $Date:: 2011-6-8 19:51:02 -0#$:  Date of last commit
  * $Log$:
  * Modified code so that constructing a new instance does not automatically call the refresh operation.
@@ -48,7 +48,6 @@ public class StockQuoteAnalyzer {
     private String symbol;
     private StockQuoteGeneratorInterface stockQuoteSource = null;
 
-    // TODO: We never use previousQuote. This must be fixed in the very last method.
     private StockQuoteInterface previousQuote = null;
     private StockQuoteInterface currentQuote = null;
 
@@ -63,14 +62,13 @@ public class StockQuoteAnalyzer {
      * @throws NullPointerException
      *             Will be thrown if the stock quote source is null.
      */
-
     public StockQuoteAnalyzer(String symbol, StockQuoteGeneratorInterface stockQuoteSource,
                               StockTickerAudioInterface audioPlayer)
             throws InvalidStockSymbolException, NullPointerException {
         super();
 
         // Check the validity of the symbol.
-        if (StockTickerListing.getSingleton().isValidTickerSymbol(symbol) == true) {
+        if (StockTickerListing.getSingleton().isValidTickerSymbol(symbol)) {
             this.symbol = symbol;
         } else {
             throw new InvalidStockSymbolException("Symbol " + symbol + "not found.");
@@ -101,7 +99,6 @@ public class StockQuoteAnalyzer {
         } catch (Exception e) {
             throw new StockTickerConnectionError("Unable to connect with Stock Ticker Source.");
         }
-
     }
 
     /**

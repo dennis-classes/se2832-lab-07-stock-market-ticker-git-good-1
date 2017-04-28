@@ -12,8 +12,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.mockito.Mock;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.DataProvider;
+// import org.testng.annotations.AfterMethod;
+// import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
@@ -116,26 +116,26 @@ public class StockQuoteAnalyzerTest {
     public void playAppropriateAudioShouldPlayNoMusicWhenPercentChangeIsBetween0And1() throws
             Exception {
         analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
-        StockQuote sq = new StockQuote("AAPL", 25.0, 50.0, 0.3);
+        StockQuote sq = new StockQuote("AAPL", 55.0, 50.0, 0.3);
         when(generatorMock.getCurrentQuote()).thenReturn(sq);
         analyzer.refresh();
         analyzer.playAppropriateAudio();
-        verify(audioMock, times(0)).playSadMusic();
-        verify(audioMock, times(0)).playHappyMusic();
-        verify(audioMock, times(0)).playErrorMusic();
+        verify(audioMock, never()).playSadMusic();
+        verify(audioMock, never()).playHappyMusic();
+        verify(audioMock, never()).playErrorMusic();
     }
 
     @Test
     public void playAppropriateAudioShouldPlayNoMusicWhenPercentChangeIsBetweenMinus1And0() throws
             Exception {
         analyzer = new StockQuoteAnalyzer("AAPL", generatorMock, audioMock);
-        StockQuote sq = new StockQuote("AAPL", 25.0, 50.0, -0.3);
+        StockQuote sq = new StockQuote("AAPL", 55.0, 50.0, -0.3);
         when(generatorMock.getCurrentQuote()).thenReturn(sq);
         analyzer.refresh();
         analyzer.playAppropriateAudio();
-        verify(audioMock, times(0)).playSadMusic();
-        verify(audioMock, times(0)).playHappyMusic();
-        verify(audioMock, times(0)).playErrorMusic();
+        verify(audioMock, never()).playSadMusic();
+        verify(audioMock, never()).playHappyMusic();
+        verify(audioMock, never()).playErrorMusic();
     }
 
     @Test
@@ -145,9 +145,9 @@ public class StockQuoteAnalyzerTest {
         when(generatorMock.getCurrentQuote()).thenReturn(sq);
         analyzer.refresh();
         analyzer.playAppropriateAudio();
-        verify(audioMock, times(0)).playSadMusic();
-        verify(audioMock, times(0)).playHappyMusic();
-        verify(audioMock, times(0)).playErrorMusic();
+        verify(audioMock, never()).playSadMusic();
+        verify(audioMock, never()).playHappyMusic();
+        verify(audioMock, never()).playErrorMusic();
     }
 
     @Test
