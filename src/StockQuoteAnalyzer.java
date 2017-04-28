@@ -77,9 +77,11 @@ public class StockQuoteAnalyzer {
         }
         if (stockQuoteSource == null) {
             throw new NullPointerException("The source for stock quotes can not be null");
+        }else if(audioPlayer == null){
+            throw new NullPointerException("The audio player can not be null");
         }
         this.stockQuoteSource = stockQuoteSource;
-        this.audioPlayer = audioPlayer; //TODO: Null check audio player
+        this.audioPlayer = audioPlayer;
     }
 
     /**
